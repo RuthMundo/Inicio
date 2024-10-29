@@ -1,0 +1,24 @@
+{
+  "name": "mi_red_social",
+  "version": "1.0.0",
+  "description": "Proyecto",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Grupo_Desarrollo_Web",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "ejs": "^3.1.10",
+    "express": "^4.21.0",
+    "express-formidable": "^1.2.0",
+    "fs": "^0.0.1-security",
+    "http": "^0.0.1-security",
+    "jsonwebtoken": "^9.0.2",
+    "mi_red_social": "file:",
+    "mongodb": "^6.9.0",
+    "mongoose": "^8.7.1",
+    "socket.io": "^4.8.0"
+  }
+}
