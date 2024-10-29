@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Network - Login</title>
+    <link rel="stylesheet" href="/public/css/main.min.css">
+    <link rel="stylesheet" href="/public/css/style.css">
+    <link rel="stylesheet" href="/public/css/color.css">
+    <link rel="stylesheet" href="/public/css/responsive.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f3f4f6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .theme-layout {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .login-reg-bd {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+        }
+        .log-title {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #4a4a4a;
+        }
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .form-group label {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            transition: 0.2s;
+            color: #aaa;
+        }
+        .form-group input:focus + label,
+        .form-group input:not(:placeholder-shown) + label {
+            top: -10px;
+            left: 10px;
+            font-size: 12px;
+            color: #007bff;
+        }
+        .submit-btns {
+            text-align: center;
+        }
+        .submit-btns button {
+            background: #007bff;
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .submit-btns button:hover {
+            background: #0056b3;
+        }
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="theme-layout">
+        <div class="login-reg-bd">
+            <div class="log-reg-area sign">
+                <h2 class="log-title">Login</h2>
+                <form onsubmit="return doLogin(this);">
+                    <div class="form-group">
+                        <input type="email" required name="email" placeholder=" " />
+                        <label class="control-label">Email</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" required name="password" placeholder=" " />
+                        <label class="control-label">Password</label>
+                    </div>
+                    <a href="/signup">Don't have an account?</a>
+                    <div class="submit-btns">
+                        <button class="mtr-btn login" name="submit" type="submit"><span>Login</span></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        function doLogin(form) {
+            form.submit.setAttribute("disabled", "disabled");
+            form.submit.innerHTML = "<span>Loading...</span>";
+            var ajax = new XMLHttpRequest();
+            ajax.open("POST", "/login", true);
+
+            ajax.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    form.submit.removeAttribute("disabled");
+                    form.submit.innerHTML = "<span>Login</span>";
+
+                    var response = JSON.parse(this.responseText);
+
+                    if (response.status == "success") {
+                        var accessToken = response.accessToken;
+                        localStorage.setItem("accessToken", accessToken);
+                        window.location.href = response.profileImage == "" ? "/updateProfile" : "/";
+                    } else {
+                        alert(response.message);
+                    }
+                }
+            };
+            ajax.send(new FormData(form));
+            return false;
+        }
+    </script>
+</body>
+</html>
